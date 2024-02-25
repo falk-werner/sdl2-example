@@ -46,6 +46,7 @@ jobs:
       
       - name: SDL2 Install
         working-directory: ./sdl2
+        run: |
           cmake --install build --config Release
       
       - name: Checkout
