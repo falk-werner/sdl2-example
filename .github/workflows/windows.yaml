@@ -65,6 +65,6 @@ jobs:
           cmake --build build
       
       - name: Deploy
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: main/build/sdl2-hello.exe
