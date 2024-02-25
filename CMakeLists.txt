@@ -3,8 +3,9 @@ project(sdl2-example VERSION 1.0.0)
 
 set(CMAKE_C_STANDARD 99)
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SDL2 REQUIRED sdl2)
+find_package(SDL2 REQUIRED)
+#find_package(PkgConfig REQUIRED)
+#pkg_check_modules(SDL2 REQUIRED sdl2)
 
 add_executable(sdl2-hello src/main.c)
 target_include_directories(sdl2-hello PRIVATE ${SDL2_INCLUDE_DIRS})
