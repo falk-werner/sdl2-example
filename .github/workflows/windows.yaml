@@ -1,0 +1,70 @@
+name: Build (Windows)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+  
+    steps:
+      - name: Setup msys2
+        uses: msys2/setup-msys2@2
+        with:
+          msystem: mingw64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-pkg-config
+
+      - name: SDL2 Checkout
+        uses: actions/checkout@4
+        with:
+          repository: libsdl-org/SDL
+          ref: release-2.30.2
+          path: sdl2
+      
+      - name: SDL2 Configure
+        working-directory: ./sdl2
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSDL_STATIC=ON -DSDL_SHARED=OFF
+      
+      - name: SDL2 Build
+        working-directory: ./sdl2
+        run: |
+          cmake --build build --config Release
+      
+      - name: SDL2 Install
+        working-directory: ./sdl2
+          cmake --install build --config Release
+      
+      - name: Checkout
+        uses: actions/checkout@4
+        with:
+          path: main
+      
+      - name: Configure
+        working-directory: ./main
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      
+      - name: Build
+        working-directory: ./main
+        run: |
+          cmake --build build
+      
+      - name: Deploy
+        working-directory: ./main
+        uses: actions/upload-artifact@3
+        with:
+          path: build/sdl2-hello.exe
