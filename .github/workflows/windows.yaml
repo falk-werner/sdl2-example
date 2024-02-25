@@ -37,7 +37,7 @@ jobs:
       - name: SDL2 Configure
         working-directory: ./sdl2
         run: |
-          cmake -B build -G Ninja -DCMAKE_C_FLAGS=-mwindows -DCMAKE_BUILD_TYPE=Release -DSDL_STATIC=ON -DSDL_SHARED=OFF
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DSDL_STATIC=ON -DSDL_SHARED=OFF
       
       - name: SDL2 Build
         working-directory: ./sdl2
